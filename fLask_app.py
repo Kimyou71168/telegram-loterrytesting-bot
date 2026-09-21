@@ -1135,5 +1135,15 @@ def index():
 
 
 if __name__ == "__main__":
+    # 🚀 Auto-set Webhook on startup if RENDER_EXTERNAL_URL is available
+    render_url = os.environ.get("RENDER_EXTERNAL_URL")
+    if render_url:
+        webhook_url = f"{render_url}/{BOT_TOKEN}"
+        try:
+            res = requests.get(f"{URL}setWebhook?url={webhook_url}")
+            print("Auto-set webhook response:", res.json())
+        except Exception as e:
+            print("Failed to auto-set webhook:", e)
+
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
